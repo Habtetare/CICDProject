@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="891644b7-274b-4e4e-ad6f-a11bd7698af8" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="cicdprojectFlow" doc:id="11c28bb8-a83b-4697-ba80-414bf010c39d" >
+		<http:listener doc:name="Listener" doc:id="e2eb38d2-a06a-4b56-91c4-767da217f285" config-ref="HTTP_Listener_config" path="/test"/>
+		<set-variable value="#[attributes.queryParams.num1]" doc:name="Set Variable" doc:id="0fb88ed6-e2eb-4dc9-9781-88a9b42c7edf" variableName="num1"/>
+		<set-variable value="#[attributes.queryParams.num2]" doc:name="Set Variable" doc:id="0a813b96-094f-4d80-8ac0-23120fa663a8" variableName="num2"/>
+		<ee:transform doc:name="Transform Message" doc:id="c61a5a0c-49ab-40aa-84e4-3374ab11a1d4" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	
+	"addition": vars.num1 as Number + vars.num2 as Number
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="f3bd82e8-38ed-4c63-a142-729bdde70cf6" message=' "Create Successfully"'/>
+	</flow>
+</mule>
