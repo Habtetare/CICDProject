@@ -21,7 +21,8 @@ pipeline {
                     mvn clean deploy -DmuleDeploy ^
                     -Dmule.app.name=CICDProject ^
                     -Dusername=Tare65 ^
-                    -Dpassword=Tsuper12356
+                    -Dpassword=Tsuper12356 ^
+                    -Dtarget=Sandbox
                 '''
             }
         }
